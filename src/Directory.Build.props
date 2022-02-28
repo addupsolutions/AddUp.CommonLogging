@@ -1,0 +1,18 @@
+<Project>
+  <!-- Reference: https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2017 -->
+  <PropertyGroup>
+    <Authors>AddUp</Authors>
+    <Company>AddUp</Company>
+    <Product>AddUp.CommonLogging</Product>
+    <Description>A replacement for Common.Logging</Description>
+    <Copyright>Copyright © 2022 - AddUp. All Rights Reserved.</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/addupsolutions/AddUp.CommonLogging</PackageProjectUrl>
+    <PackageIcon>logo.png</PackageIcon>
+  </PropertyGroup>
+
+  <!-- https://github.com/clairernovotny/DeterministicBuilds -->
+  <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+</Project>
