@@ -118,18 +118,13 @@ namespace AddUp.CommonLogging.Simple
 
         private static void OutputProperties(IFormatProvider formatProvider, StringBuilder builder, Exception exception)
         {
-            // output exception properties:
-            //
-            //	Properties:
-            //	  ArgumentException.ParamName = "text"            
             var properties = exception.GetType().GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public);
             var first = true;
+
             foreach (PropertyInfo property in properties)
             {
-                if (property.DeclaringType == typeof(Exception))
-                    continue;
-                if (property.Name == "Message")
-                    continue;
+                if (property.DeclaringType == typeof(Exception)) continue;
+                if (property.Name == "Message") continue;
 
                 if (first)
                 {
@@ -137,23 +132,28 @@ namespace AddUp.CommonLogging.Simple
                     _ = builder.Append("\r\nProperties:\r\n");
                 }
 
-                object propertyValue = "<unavailable>";
-
-                if (property.CanRead && property.GetIndexParameters().Length <= 0)
-                    propertyValue = property.GetValue(exception, null);
-
-                var propertyTypeName = property.ReflectedType.Name;
-                if (propertyValue is IEnumerable enumerableValue && !(propertyValue is string))
-                {
-                    _ = builder.AppendFormat(formatProvider, "  {0}.{1} = {{\r\n", propertyTypeName, property.Name);
-
-                    foreach (var item in enumerableValue)
-                        _ = builder.AppendFormat("    \"{0}\",\r\n", item != null ? item.ToString() : "<null>");
-
-                    _ = builder.Append("  }\r\n");
-                }
-                else _ = builder.AppendFormat(formatProvider, "  {0}.{1} = \"{2}\"\r\n", propertyTypeName, property.Name, propertyValue);
+                OutputProperty(property, formatProvider, builder, exception);
             }
+        }
+
+        private static void OutputProperty(PropertyInfo property, IFormatProvider formatProvider, StringBuilder builder, Exception exception)
+        {
+            object propertyValue = "<unavailable>";
+
+            if (property.CanRead && property.GetIndexParameters().Length <= 0)
+                propertyValue = property.GetValue(exception, null);
+
+            var propertyTypeName = property.ReflectedType.Name;
+            if (propertyValue is IEnumerable enumerableValue && !(propertyValue is string))
+            {
+                _ = builder.AppendFormat(formatProvider, "  {0}.{1} = {{\r\n", propertyTypeName, property.Name);
+
+                foreach (var item in enumerableValue)
+                    _ = builder.AppendFormat("    \"{0}\",\r\n", item != null ? item.ToString() : "<null>");
+
+                _ = builder.Append("  }\r\n");
+            }
+            else _ = builder.AppendFormat(formatProvider, "  {0}.{1} = \"{2}\"\r\n", propertyTypeName, property.Name, propertyValue);
         }
 
         private static void OutputData(IFormatProvider formatProvider, StringBuilder builder, Exception exception)

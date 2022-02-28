@@ -65,31 +65,7 @@ namespace AddUp.CommonLogging.NLog
     {
         public NLogLoggerFactoryAdapter(NameValueCollection properties) : base(true)
         {
-            var configType = string.Empty;
-            var configFile = string.Empty;
-
-            if (properties != null)
-            {
-                if (properties["configType"] != null)
-                    configType = properties["configType"].ToUpperInvariant();
-
-                if (properties["configFile"] != null)
-                {
-                    configFile = properties["configFile"];
-                    if (configFile.StartsWith("~/") || configFile.StartsWith("~\\"))
-                        configFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.TrimEnd('/', '\\'), configFile.Substring(2));
-                }
-
-                if (configType == "FILE")
-                {
-                    if (configFile == string.Empty)
-                        throw new ConfigurationException("Configuration property 'configFile' must be set for NLog configuration of type 'FILE'.");
-
-                    if (!File.Exists(configFile))
-                        throw new ConfigurationException($"NLog configuration file '{configFile}' does not exist");
-                }
-            }
-
+            var (configType, configFile) = GetConfiguration(properties);
             switch (configType)
             {
                 case "INLINE":
@@ -104,5 +80,35 @@ namespace AddUp.CommonLogging.NLog
         }
 
         protected override ILog CreateLogger(string name) => new NLogLogger(global::NLog.LogManager.GetLogger(name));
+
+        private static (string configType, string configFile) GetConfiguration(NameValueCollection properties)
+        {
+            if (properties == null)
+                return (string.Empty, string.Empty);
+
+            var configType = string.Empty;
+            var configFile = string.Empty;
+
+            if (properties["configType"] != null)
+                configType = properties["configType"].ToUpperInvariant();
+
+            if (properties["configFile"] != null)
+            {
+                configFile = properties["configFile"];
+                if (configFile.StartsWith("~/") || configFile.StartsWith("~\\"))
+                    configFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.TrimEnd('/', '\\'), configFile.Substring(2));
+            }
+
+            if (configType == "FILE")
+            {
+                if (configFile == string.Empty)
+                    throw new ConfigurationException("Configuration property 'configFile' must be set for NLog configuration of type 'FILE'.");
+
+                if (!File.Exists(configFile))
+                    throw new ConfigurationException($"NLog configuration file '{configFile}' does not exist");
+            }
+
+            return (configType, configFile);
+        }
     }
 }
