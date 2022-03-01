@@ -18,3 +18,38 @@ Here are the main differences:
 * The two original `Common.Logging.Core` and `Common.Logging` packages are merged into a unique `AddUp.CommonLogging` package (and assembly)
 * For now, only NLog is supported (since version 4.5)
 * Obsolete methods were removed
+
+## Usage
+
+Using `AddUp.CommonLogging` is very similar to using `Common.Logging`. One mainly has to replace occurrences of `Common.Logging` by `AddUp.CommonLogging` both in C# source code and in App.config.
+
+In libraries, instead of referencing the `Common.Logging` or `Common.Logging.Core` nuget packages, reference `AddUp.CommonLogging`.
+
+In application code, given NLog is the concrete logging implementation, reference `AddUp.CommonLogging.NLog` instead of `Common.Logging.NLog40` (or any other NLog-suffixed package).
+
+A typical `App.config` file delegating logging to NLog would look like this (here again, `Common.Logging` is replaced by `AddUp.CommonLogging` be it in type or assembly names):
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <configSections>
+    <sectionGroup name="common">
+      <section name="logging" type="AddUp.CommonLogging.ConfigurationSectionHandler, AddUp.CommonLogging" />
+    </sectionGroup>
+  </configSections>
+  <common>
+    <logging>
+      <factoryAdapter type="AddUp.CommonLogging.NLog.NLogLoggerFactoryAdapter, AddUp.CommonLogging.NLog">
+        <arg key="configType" value="FILE" />
+        <arg key="configFile" value="~/nlog.config" />
+      </factoryAdapter>
+    </logging>
+  </common>
+</configuration>
+```
+
+## History
+
+### [Version 1.0.0 - 2022/03/01](https://github.com/addupsolutions/AddUp.CommonLogging/releases/tag/v1.0.0)
+
+Initial version
