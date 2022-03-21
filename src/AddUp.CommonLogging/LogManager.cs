@@ -20,8 +20,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using AddUp.CommonLogging.Configuration;
 using AddUp.CommonLogging.Simple;
 
@@ -79,7 +77,7 @@ namespace AddUp.CommonLogging
         /// You can always change the source of your configuration settings by setting another <see cref="IConfigurationReader"/> instance
         /// on <see cref="ConfigurationReader"/>.
         /// </remarks>
-        public static string COMMON_LOGGING_SECTION => "common/logging";
+        public static string ADDUP_COMMONLOGGING_SECTION => "addup/logging"; // addup/logging and not common/logging so as not to collide with the original Common.Logging
 
         /// <summary>
         /// The key of the default configuration section to read settings from.
@@ -88,7 +86,7 @@ namespace AddUp.CommonLogging
         /// You can always change the source of your configuration settings by setting another <see cref="IConfigurationReader"/> instance
         /// on <see cref="ConfigurationReader"/>.
         /// </remarks>
-        string ILogManager.COMMON_LOGGING_SECTION => COMMON_LOGGING_SECTION;
+        string ILogManager.ADDUP_COMMONLOGGING_SECTION => ADDUP_COMMONLOGGING_SECTION;
 
         private static ILoggerFactoryAdapter adapter;
         private static readonly object loadLock = new object();
@@ -225,14 +223,14 @@ namespace AddUp.CommonLogging
         private static ILoggerFactoryAdapter BuildLoggerFactoryAdapter()
         {
             var sectionResult = ArgUtils.Guard(
-                () => ConfigurationReader.GetSection(COMMON_LOGGING_SECTION),
+                () => ConfigurationReader.GetSection(ADDUP_COMMONLOGGING_SECTION),
                 "Failed obtaining configuration for AddUp.CommonLogging from configuration section 'common/logging'.");
 
             // configuration reader returned <null>
             if (sectionResult == null)
             {
                 var message = (ConfigurationReader is DefaultConfigurationReader)
-                    ? $"no configuration section <{COMMON_LOGGING_SECTION}> found - suppressing logging output"
+                    ? $"no configuration section <{ADDUP_COMMONLOGGING_SECTION}> found - suppressing logging output"
                     : $"Custom ConfigurationReader '{ConfigurationReader.GetType().FullName}' returned <null> - suppressing logging output";
                 Trace.WriteLine(message);
                 ILoggerFactoryAdapter defaultFactory = new NoOpLoggerFactoryAdapter();

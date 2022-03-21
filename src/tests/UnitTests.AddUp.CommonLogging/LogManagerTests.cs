@@ -60,7 +60,7 @@ namespace AddUp.CommonLogging
 
             IConfigurationReader r = mocks.StrictMock<IConfigurationReader>();
             using (mocks.Record())
-                _ = Expect.Call(r.GetSection(LogManager.COMMON_LOGGING_SECTION)).Return(new TraceLoggerFactoryAdapter());
+                _ = Expect.Call(r.GetSection(LogManager.ADDUP_COMMONLOGGING_SECTION)).Return(new TraceLoggerFactoryAdapter());
 
             using (mocks.Playback())
             {
@@ -75,10 +75,10 @@ namespace AddUp.CommonLogging
             var r = mocks.StrictMock<IConfigurationReader>();
             using (mocks.Record())
             {
-                _ = Expect.Call(r.GetSection(LogManager.COMMON_LOGGING_SECTION)).Return(null);
-                _ = Expect.Call(r.GetSection(LogManager.COMMON_LOGGING_SECTION)).Return(new TraceLoggerFactoryAdapter());
-                _ = Expect.Call(r.GetSection(LogManager.COMMON_LOGGING_SECTION)).Return(new LogSetting(typeof(ConsoleOutLoggerFactoryAdapter), null));
-                _ = Expect.Call(r.GetSection(LogManager.COMMON_LOGGING_SECTION)).Return(new object());
+                _ = Expect.Call(r.GetSection(LogManager.ADDUP_COMMONLOGGING_SECTION)).Return(null);
+                _ = Expect.Call(r.GetSection(LogManager.ADDUP_COMMONLOGGING_SECTION)).Return(new TraceLoggerFactoryAdapter());
+                _ = Expect.Call(r.GetSection(LogManager.ADDUP_COMMONLOGGING_SECTION)).Return(new LogSetting(typeof(ConsoleOutLoggerFactoryAdapter), null));
+                _ = Expect.Call(r.GetSection(LogManager.ADDUP_COMMONLOGGING_SECTION)).Return(new object());
             }
 
             using (mocks.Playback())

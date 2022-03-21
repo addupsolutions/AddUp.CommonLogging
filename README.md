@@ -27,28 +27,33 @@ In libraries, instead of referencing the `Common.Logging` or `Common.Logging.Cor
 
 In application code, given NLog is the concrete logging implementation, reference `AddUp.CommonLogging.NLog` instead of `Common.Logging.NLog40` (or any other NLog-suffixed package).
 
-A typical `App.config` file delegating logging to NLog would look like this (here again, `Common.Logging` is replaced by `AddUp.CommonLogging` be it in type or assembly names):
+A typical `App.config` file delegating logging to NLog would look like this (here again, `Common.Logging` is replaced by `AddUp.CommonLogging` be it in type or assembly names). 
+Also note that the section group should be `addup` and not `common` (so that it does not collide with eventual Common.Logging configuration):
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
   <configSections>
-    <sectionGroup name="common">
+    <sectionGroup name="addup">
       <section name="logging" type="AddUp.CommonLogging.ConfigurationSectionHandler, AddUp.CommonLogging" />
     </sectionGroup>
   </configSections>
-  <common>
+  <addup>
     <logging>
       <factoryAdapter type="AddUp.CommonLogging.NLog.NLogLoggerFactoryAdapter, AddUp.CommonLogging.NLog">
         <arg key="configType" value="FILE" />
         <arg key="configFile" value="~/nlog.config" />
       </factoryAdapter>
     </logging>
-  </common>
+  </addup>
 </configuration>
 ```
 
 ## History
+
+### [Version 1.0.1 - 2022/03/21](https://github.com/addupsolutions/AddUp.CommonLogging/releases/tag/v1.0.1)
+
+* BUGFIX: the configuration section group name should be `addup` and not `common`.
 
 ### [Version 1.0.0 - 2022/03/01](https://github.com/addupsolutions/AddUp.CommonLogging/releases/tag/v1.0.0)
 

@@ -34,7 +34,7 @@ namespace AddUp.CommonLogging
         /// You can always change the source of your configuration settings by setting another <see cref="IConfigurationReader"/> instance
         /// on <see cref="ConfigurationReader"/>.
         /// </remarks>
-        string COMMON_LOGGING_SECTION { get; }
+        string ADDUP_COMMONLOGGING_SECTION { get; }
 
         /// <summary>
         /// Reset the <see cref="AddUp.CommonLogging" /> infrastructure to its default settings. This means, that configuration settings

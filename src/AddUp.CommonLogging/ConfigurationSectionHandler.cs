@@ -35,11 +35,11 @@ namespace AddUp.CommonLogging
     /// <code lang="XML">
     /// &lt;configuration&gt;
     ///     &lt;configSections&gt;
-    ///       &lt;sectionGroup name=&quot;common&quot;&gt;
+    ///       &lt;sectionGroup name=&quot;addup&quot;&gt;
     ///         &lt;section name=&quot;logging&quot; type=&quot;AddUp.CommonLogging.ConfigurationSectionHandler, AddUp.CommonLogging&quot; /&gt;
     ///       &lt;/sectionGroup&gt; 
     ///     &lt;/configSections&gt;
-    ///     &lt;common&gt;
+    ///     &lt;addup&gt;
     ///       &lt;logging&gt;
     ///         &lt;factoryAdapter type=&quot;AddUp.CommonLogging.Simple.ConsoleOutLoggerFactoryAdapter, AddUp.CommonLogging&quot;&gt;
     ///           &lt;arg key=&quot;showLogName&quot; value=&quot;true&quot; /&gt;
@@ -48,7 +48,7 @@ namespace AddUp.CommonLogging
     ///           &lt;arg key=&quot;dateTimeFormat&quot; value=&quot;yyyy/MM/dd HH:mm:ss:fff&quot; /&gt;
     ///         &lt;/factoryAdapter&gt;
     ///       &lt;/logging&gt;
-    ///     &lt;/common&gt;
+    ///     &lt;/addup&gt;
     /// &lt;/configuration&gt;
     /// </code>
     /// </example>
