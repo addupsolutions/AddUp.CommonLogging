@@ -27,7 +27,7 @@
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="Rhino.Mocks.Standard" Version="1.0.0" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.36.1.44192">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.37.0.45539">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
