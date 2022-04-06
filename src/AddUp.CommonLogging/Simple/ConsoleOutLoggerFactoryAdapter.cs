@@ -79,7 +79,7 @@ namespace AddUp.CommonLogging.Simple
         /// <param name="properties">The name value collection, typically specified by the user in 
         /// a configuration section named common/logging.</param>
         public ConsoleOutLoggerFactoryAdapter(NameValueCollection properties) : base(properties) { }
-      
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AbstractSimpleLoggerFactoryAdapter"/> class with 
         /// default settings for the loggers created by this factory.

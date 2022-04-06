@@ -43,7 +43,7 @@ namespace AddUp.CommonLogging.Simple
         public IVariablesContext GlobalVariablesContext => new NoOpVariablesContext();
         public IVariablesContext ThreadVariablesContext => new NoOpVariablesContext();
         public INestedVariablesContext NestedThreadVariablesContext => new NoOpNestedVariablesContext();
-                
+
         public void Trace(object message) { }
         public void Trace(object message, Exception exception) { }
         public void Trace(FormatMessageCallback formatMessageCallback) { }

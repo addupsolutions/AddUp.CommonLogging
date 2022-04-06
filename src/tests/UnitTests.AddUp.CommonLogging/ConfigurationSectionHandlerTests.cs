@@ -125,7 +125,7 @@ namespace AddUp.CommonLogging
 <logging>
     <factoryAdapter type='NOOP'/>
 </logging>";
-            
+
             var reader = new StandaloneConfigurationReader(xml);
             var setting = reader.GetSection(null) as LogSetting;
             Assert.IsNotNull(setting);

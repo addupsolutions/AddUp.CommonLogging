@@ -20,21 +20,21 @@
 
 namespace AddUp.CommonLogging.NLog
 {
-	partial class NLogLogger
-	{
-		/// <summary>
-		/// Returns the global context for variables
-		/// </summary>
-		public override IVariablesContext GlobalVariablesContext => new NLogGlobalVariablesContext();
+    partial class NLogLogger
+    {
+        /// <summary>
+        /// Returns the global context for variables
+        /// </summary>
+        public override IVariablesContext GlobalVariablesContext => new NLogGlobalVariablesContext();
 
-		/// <summary>
-		/// Returns the thread-specific context for variables
-		/// </summary>
-		public override IVariablesContext ThreadVariablesContext => new NLogThreadVariablesContext();
+        /// <summary>
+        /// Returns the thread-specific context for variables
+        /// </summary>
+        public override IVariablesContext ThreadVariablesContext => new NLogThreadVariablesContext();
 
-		/// <summary>
-		/// Returns the thread-specific context for nested variables (for NDC, eg.)
-		/// </summary>
-		public override INestedVariablesContext NestedThreadVariablesContext => new NLogNestedThreadVariablesContext();
-	}
+        /// <summary>
+        /// Returns the thread-specific context for nested variables (for NDC, eg.)
+        /// </summary>
+        public override INestedVariablesContext NestedThreadVariablesContext => new NLogNestedThreadVariablesContext();
+    }
 }

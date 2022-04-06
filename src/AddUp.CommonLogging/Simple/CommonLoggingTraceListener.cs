@@ -85,7 +85,7 @@ namespace AddUp.CommonLogging.Simple
         {
             if (properties == null)
                 properties = new NameValueCollection();
-            
+
             ApplyProperties(properties);
         }
 

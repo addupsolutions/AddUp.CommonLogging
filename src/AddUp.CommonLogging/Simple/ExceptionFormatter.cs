@@ -21,10 +21,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Globalization;
 
 namespace AddUp.CommonLogging.Simple
 {

@@ -37,7 +37,7 @@ namespace AddUp.CommonLogging.Configuration
         {
             _ = ArgUtils.AssertNotNull(nameof(factoryAdapterType), factoryAdapterType);
             _ = ArgUtils.AssertIsAssignable<ILoggerFactoryAdapter>(
-                nameof(factoryAdapterType), factoryAdapterType, 
+                nameof(factoryAdapterType), factoryAdapterType,
                 $"Type {factoryAdapterType.AssemblyQualifiedName} does not implement {typeof(ILoggerFactoryAdapter).FullName}");
 
             FactoryAdapterType = factoryAdapterType;

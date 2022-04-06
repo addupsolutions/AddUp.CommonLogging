@@ -21,7 +21,6 @@
 using System;
 using System.Globalization;
 using System.Text;
-using AddUp.CommonLogging;
 using AddUp.CommonLogging.Factory;
 
 namespace AddUp.CommonLogging.Simple
@@ -90,10 +89,10 @@ namespace AddUp.CommonLogging.Simple
 
         public override bool IsTraceEnabled => IsLevelEnabled(LogLevel.Trace);
         public override bool IsDebugEnabled => IsLevelEnabled(LogLevel.Debug);
-        public override bool IsInfoEnabled=> IsLevelEnabled(LogLevel.Info);
-        public override bool IsWarnEnabled=> IsLevelEnabled(LogLevel.Warn);
-        public override bool IsErrorEnabled=> IsLevelEnabled(LogLevel.Error);
-        public override bool IsFatalEnabled=> IsLevelEnabled(LogLevel.Fatal);
+        public override bool IsInfoEnabled => IsLevelEnabled(LogLevel.Info);
+        public override bool IsWarnEnabled => IsLevelEnabled(LogLevel.Warn);
+        public override bool IsErrorEnabled => IsLevelEnabled(LogLevel.Error);
+        public override bool IsFatalEnabled => IsLevelEnabled(LogLevel.Fatal);
 
         /// <summary>
         /// Appends the formatted message to the specified <see cref="StringBuilder"/>.
@@ -118,7 +117,7 @@ namespace AddUp.CommonLogging.Simple
             if (ShowLevel) // Append a readable representation of the log level
                 _ = stringBuilder.Append(("[" + level.ToString().ToUpper() + "]").PadRight(8));
 
-            
+
             if (ShowLogName) // Append the key of the log instance if so configured
                 _ = stringBuilder.Append(Name).Append(" - ");
 

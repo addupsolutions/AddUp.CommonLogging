@@ -17,7 +17,7 @@ namespace AddUp.CommonLogging.Utils
 
         public static bool IsSerializable(object o) => o == null || o.GetType().IsSerializable;
 
-        public static bool IsSerializable<T>()=> typeof(T).IsSerializable;
+        public static bool IsSerializable<T>() => typeof(T).IsSerializable;
 
         public static T SerializeAndDeserialize<T>(T o)
         {

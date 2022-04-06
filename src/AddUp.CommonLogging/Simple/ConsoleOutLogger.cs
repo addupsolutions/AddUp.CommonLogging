@@ -29,7 +29,7 @@ namespace AddUp.CommonLogging.Simple
     /// </summary>
     /// <author>Gilles Bayon</author>
     [Serializable]
-    public class ConsoleOutLogger : Simple.AbstractSimpleLogger
+    public class ConsoleOutLogger : AbstractSimpleLogger
     {
         private static readonly Dictionary<LogLevel, ConsoleColor> colors = new Dictionary<LogLevel, ConsoleColor>
         {

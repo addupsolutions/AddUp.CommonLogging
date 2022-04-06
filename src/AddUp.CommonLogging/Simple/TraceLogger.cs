@@ -128,7 +128,7 @@ namespace AddUp.CommonLogging.Simple
                 }
             }
         }
-        
+
         private TraceEventType Map2TraceEventType(LogLevel logLevel)
         {
             switch (logLevel)

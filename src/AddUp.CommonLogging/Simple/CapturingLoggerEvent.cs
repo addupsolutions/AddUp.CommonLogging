@@ -20,17 +20,17 @@ namespace AddUp.CommonLogging.Simple
         /// The logger that logged this event
         /// </summary>
         public CapturingLogger Source { get; }
-        
+
         /// <summary>
         /// The level used to log this event
         /// </summary>
         public LogLevel Level { get; }
-        
+
         /// <summary>
         /// The raw message object
         /// </summary>
         public object MessageObject { get; }
-        
+
         /// <summary>
         /// A logged exception
         /// </summary>

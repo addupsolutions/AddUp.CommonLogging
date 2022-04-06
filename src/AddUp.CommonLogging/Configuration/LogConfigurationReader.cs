@@ -28,10 +28,10 @@ namespace AddUp.CommonLogging.Configuration
         {
             if (configuration.FactoryAdapter == null)
                 throw new ConfigurationException("LogConfiguration.FactoryAdapter is required.");
-            
+
             if (string.IsNullOrEmpty(configuration.FactoryAdapter.Type))
                 throw new ConfigurationException("LogConfiguration.FactoryAdapter.Type is required.");
-            
+
 
             Type factoryType;
             try
