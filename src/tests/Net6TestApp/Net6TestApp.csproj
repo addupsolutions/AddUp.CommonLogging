@@ -10,6 +10,11 @@
     <ProjectReference Include="..\..\AddUp.CommonLogging.NLog\AddUp.CommonLogging.NLog.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="4.5.0" />
+  </ItemGroup>
+  
   <ItemGroup>
     <None Update="nlog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
