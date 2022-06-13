@@ -21,7 +21,7 @@
     our current use v5 and v4 are API-compatible). However, we shouldn't upgrade NLog
     so that client projects targeting NLog 4.5+ can keep consuming us.
     -->
-    <NLogVersion>4.5.0</NLogVersion>
+    <NLogVersion>5.0.1</NLogVersion>
   </PropertyGroup>
   
   <ItemGroup>
