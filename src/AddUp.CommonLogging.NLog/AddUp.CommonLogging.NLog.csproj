@@ -15,12 +15,22 @@
     <SonarQubeTestProject>false</SonarQubeTestProject>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- 
+    Let's pin this version of NLog: the library is compatible with v5 (because with 
+    our current use v5 and v4 are API-compatible). However, we shouldn't upgrade NLog
+    so that client projects targeting NLog 4.5+ can keep consuming us.
+    -->
+    <NLogVersion>4.5.0</NLogVersion>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Include="../common/logo.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.0" />
+    <!-- Do not update NLog below -->
+    <PackageReference Include="NLog" Version="$(NLogVersion)" />
     <PackageReference Include="GitVersion.MsBuild" Version="5.10.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
