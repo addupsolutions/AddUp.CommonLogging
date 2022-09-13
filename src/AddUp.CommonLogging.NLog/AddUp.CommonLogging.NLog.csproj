@@ -25,10 +25,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Include="../common/logo.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <!-- Do not update NLog below -->
     <PackageReference Include="NLog" Version="[4.5.0, 5.0.0)" />
     <PackageReference Include="GitVersion.MsBuild" Version="5.10.3">
@@ -47,5 +43,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AddUp.CommonLogging\AddUp.CommonLogging.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Label="Packaging">
+    <None Include="../common/logo.png" Pack="true" PackagePath="\" />
+    <Content Include="..\..\Common\AddPdbToCopyLocal.targets" Pack="true" PackagePath="build/$(PackageId).targets" />
+    <Content Include="..\..\Common\AddPdbToCopyLocal.targets" Pack="true" PackagePath="buildTransitive/$(PackageId).targets" Link="AddPdbToCopyLocal.targets" />
   </ItemGroup>
 </Project>

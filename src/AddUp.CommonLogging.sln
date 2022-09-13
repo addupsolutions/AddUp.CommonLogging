@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EAF5E2D7-B425-45CD-B7FE-5697BFEA4E29}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		common\AddPdbToCopyLocal.targets = common\AddPdbToCopyLocal.targets
 		common\AddUp.CommonLogging.snk = common\AddUp.CommonLogging.snk
 		Directory.Build.props = Directory.Build.props
 		common\logo.png = common\logo.png
@@ -17,9 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddUp.CommonLogging", "AddU
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddUp.CommonLogging.NLog", "AddUp.CommonLogging.NLog\AddUp.CommonLogging.NLog.csproj", "{1FFC9690-2426-4ECB-AFDD-3A552B5F0E05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net6TestApp", "tests\Net6TestApp\Net6TestApp.csproj", "{8BF84608-AC71-4CBC-83AA-26ECB0556A17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6TestApp", "tests\Net6TestApp\Net6TestApp.csproj", "{8BF84608-AC71-4CBC-83AA-26ECB0556A17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.AddUp.CommonLogging", "tests\UnitTests.AddUp.CommonLogging\UnitTests.AddUp.CommonLogging.csproj", "{F82FB4D3-5742-4039-B61C-10850B4D7C55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.AddUp.CommonLogging", "tests\UnitTests.AddUp.CommonLogging\UnitTests.AddUp.CommonLogging.csproj", "{F82FB4D3-5742-4039-B61C-10850B4D7C55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

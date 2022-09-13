@@ -14,10 +14,6 @@
     <SonarQubeExclude>false</SonarQubeExclude>
     <SonarQubeTestProject>false</SonarQubeTestProject>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="../common/logo.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
@@ -34,5 +30,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>    
   </ItemGroup>
-  
+
+  <ItemGroup Label="Packaging">
+    <None Include="../common/logo.png" Pack="true" PackagePath="\" />
+    <Content Include="..\..\Common\AddPdbToCopyLocal.targets" Pack="true" PackagePath="build/$(PackageId).targets" />
+    <Content Include="..\..\Common\AddPdbToCopyLocal.targets" Pack="true" PackagePath="buildTransitive/$(PackageId).targets" Link="AddPdbToCopyLocal.targets" />
+  </ItemGroup>
 </Project>
