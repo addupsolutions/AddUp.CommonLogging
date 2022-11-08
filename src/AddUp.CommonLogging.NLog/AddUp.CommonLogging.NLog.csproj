@@ -27,7 +27,7 @@
   <ItemGroup>
     <!-- Do not update NLog below -->
     <PackageReference Include="NLog" Version="$(NLogVersion)" />
-    <PackageReference Include="GitVersion.MsBuild" Version="5.10.3">
+    <PackageReference Include="GitVersion.MsBuild" Version="5.11.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
