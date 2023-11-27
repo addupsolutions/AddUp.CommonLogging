@@ -24,25 +24,26 @@ using AddUp.CommonLogging.Configuration;
 using AddUp.CommonLogging.Simple;
 using AddUp.CommonLogging.Utils;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
-namespace AddUp.CommonLogging
+namespace AddUp.CommonLogging;
+
+[TestFixture, ExcludeFromCodeCoverage]
+public class ConfigurationSectionHandlerTests
 {
-    [TestFixture, ExcludeFromCodeCoverage]
-    public class ConfigurationSectionHandlerTests
+    [Test]
+    public void NoParentSectionsAllowed()
     {
-        [Test]
-        public void NoParentSectionsAllowed()
-        {
-            IConfigurationSectionHandler handler = new ConfigurationSectionHandler();
-            _ = Assert.Throws(
-                Is.TypeOf<ConfigurationException>().And.Message.EqualTo("parent configuration sections are not allowed"),
-                () => handler.Create(new LogSetting(typeof(ConsoleOutLoggerFactoryAdapter), null), null, null));
-        }
+        IConfigurationSectionHandler handler = new ConfigurationSectionHandler();
+        _ = Assert.Throws(
+            Is.TypeOf<ConfigurationException>().And.Message.EqualTo("parent configuration sections are not allowed"),
+            () => handler.Create(new LogSetting(typeof(ConsoleOutLoggerFactoryAdapter), null), null, null));
+    }
 
-        [Test]
-        public void TooManyAdapterElements()
-        {
-            const string xml =
+    [Test]
+    public void TooManyAdapterElements()
+    {
+        const string xml =
 @"<?xml version='1.0' encoding='UTF-8' ?>
 <logging>
     <factoryAdapter type='AddUp.CommonLogging.Simple.ConsoleOutLoggerFactoryAdapter, AddUp.CommonLogging'>
@@ -51,16 +52,16 @@ namespace AddUp.CommonLogging
     </factoryAdapter>
 </logging>";
 
-            var reader = new StandaloneConfigurationReader(xml);
-            _ = Assert.Throws(
-                Is.TypeOf<ConfigurationException>().And.Message.EqualTo("Only one <factoryAdapter> element allowed"),
-                () => reader.GetSection(null));
-        }
+        var reader = new StandaloneConfigurationReader(xml);
+        _ = Assert.Throws(
+            Is.TypeOf<ConfigurationException>().And.Message.EqualTo("Only one <factoryAdapter> element allowed"),
+            () => reader.GetSection(null));
+    }
 
-        [Test]
-        public void NoTypeElementForAdapterDeclaration()
-        {
-            const string xml =
+    [Test]
+    public void NoTypeElementForAdapterDeclaration()
+    {
+        const string xml =
 @"<?xml version='1.0' encoding='UTF-8' ?>
 <logging>
     <factoryAdapter clazz='AddUp.CommonLogging.Simple.ConsoleOutLoggerFactoryAdapter, AddUp.CommonLogging'>
@@ -68,14 +69,14 @@ namespace AddUp.CommonLogging
     </factoryAdapter>
 </logging>";
 
-            var reader = new StandaloneConfigurationReader(xml);
-            _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
-        }
+        var reader = new StandaloneConfigurationReader(xml);
+        _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
+    }
 
-        [Test]
-        public void NoKeyElementForAdapterArguments()
-        {
-            const string xml =
+    [Test]
+    public void NoKeyElementForAdapterArguments()
+    {
+        const string xml =
 @"<?xml version='1.0' encoding='UTF-8' ?>
 <logging>
     <factoryAdapter type='AddUp.CommonLogging.Simple.ConsoleOutLoggerFactoryAdapter, AddUp.CommonLogging'>
@@ -83,59 +84,59 @@ namespace AddUp.CommonLogging
     </factoryAdapter>
 </logging>";
 
-            var reader = new StandaloneConfigurationReader(xml);
-            _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
-        }
+        var reader = new StandaloneConfigurationReader(xml);
+        _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
+    }
 
-        [Test]
-        public void ConsoleShortcut()
-        {
-            const string xml =
+    [Test]
+    public void ConsoleShortcut()
+    {
+        const string xml =
 @"<?xml version='1.0' encoding='UTF-8' ?>
 <logging>
     <factoryAdapter type='CONSOLE'/>
 </logging>";
 
-            var reader = new StandaloneConfigurationReader(xml);
-            var setting = reader.GetSection(null) as LogSetting;
-            Assert.IsNotNull(setting);
-            Assert.AreEqual(typeof(ConsoleOutLoggerFactoryAdapter), setting.FactoryAdapterType);
-        }
+        var reader = new StandaloneConfigurationReader(xml);
+        var setting = reader.GetSection(null) as LogSetting;            
+        ClassicAssert.IsNotNull(setting);
+        ClassicAssert.AreEqual(typeof(ConsoleOutLoggerFactoryAdapter), setting.FactoryAdapterType);
+    }
 
-        [Test]
-        public void TraceShortCut()
-        {
-            const string xml =
+    [Test]
+    public void TraceShortCut()
+    {
+        const string xml =
 @"<?xml version='1.0' encoding='UTF-8' ?>
 <logging>
     <factoryAdapter type='TRACE'/>
 </logging>";
 
-            var reader = new StandaloneConfigurationReader(xml);
-            var setting = reader.GetSection(null) as LogSetting;
-            Assert.IsNotNull(setting);
-            Assert.AreEqual(typeof(TraceLoggerFactoryAdapter), setting.FactoryAdapterType);
-        }
+        var reader = new StandaloneConfigurationReader(xml);
+        var setting = reader.GetSection(null) as LogSetting;
+        ClassicAssert.IsNotNull(setting);
+        ClassicAssert.AreEqual(typeof(TraceLoggerFactoryAdapter), setting.FactoryAdapterType);
+    }
 
-        [Test]
-        public void NoOpShortCut()
-        {
-            const string xml =
+    [Test]
+    public void NoOpShortCut()
+    {
+        const string xml =
 @"<?xml version='1.0' encoding='UTF-8' ?>
 <logging>
     <factoryAdapter type='NOOP'/>
 </logging>";
 
-            var reader = new StandaloneConfigurationReader(xml);
-            var setting = reader.GetSection(null) as LogSetting;
-            Assert.IsNotNull(setting);
-            Assert.AreEqual(typeof(NoOpLoggerFactoryAdapter), setting.FactoryAdapterType);
-        }
+        var reader = new StandaloneConfigurationReader(xml);
+        var setting = reader.GetSection(null) as LogSetting;
+        ClassicAssert.IsNotNull(setting);
+        ClassicAssert.AreEqual(typeof(NoOpLoggerFactoryAdapter), setting.FactoryAdapterType);
+    }
 
-        [Test]
-        public void ArgumentKeysCaseInsensitive()
-        {
-            const string xml =
+    [Test]
+    public void ArgumentKeysCaseInsensitive()
+    {
+        const string xml =
 @"<?xml version='1.0' encoding='UTF-8' ?>
 <logging>
     <factoryAdapter type='CONSOLE'>
@@ -145,16 +146,15 @@ namespace AddUp.CommonLogging
     </factoryAdapter>
 </logging>";
 
-            var reader = new StandaloneConfigurationReader(xml);
-            var setting = reader.GetSection(null) as LogSetting;
-            Assert.IsNotNull(setting);
+        var reader = new StandaloneConfigurationReader(xml);
+        var setting = reader.GetSection(null) as LogSetting;
+        ClassicAssert.IsNotNull(setting);
 
-            Assert.AreEqual(3, setting.Properties.Count);
+        ClassicAssert.AreEqual(3, setting.Properties.Count);
 
-            var expectedValue = new[] { "DEBUG" };
-            CollectionAssert.AreEqual(expectedValue, setting.Properties.GetValues("level1"));
-            CollectionAssert.AreEqual(expectedValue, setting.Properties.GetValues("level2"));
-            CollectionAssert.AreEqual(expectedValue, setting.Properties.GetValues("LEVEL3"));
-        }
+        var expectedValue = new[] { "DEBUG" };
+        CollectionAssert.AreEqual(expectedValue, setting.Properties.GetValues("level1"));
+        CollectionAssert.AreEqual(expectedValue, setting.Properties.GetValues("level2"));
+        CollectionAssert.AreEqual(expectedValue, setting.Properties.GetValues("LEVEL3"));
     }
 }

@@ -22,32 +22,31 @@ using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml;
 
-namespace AddUp.CommonLogging.Utils
+namespace AddUp.CommonLogging.Utils;
+
+/// <summary>
+/// A ConfigurationReader implementation that call the ConfigurationSectionHandler on a 
+/// supplied XML string.
+/// </summary>
+/// <author>Mark Pollack</author>
+[ExcludeFromCodeCoverage]
+internal sealed class StandaloneConfigurationReader : IConfigurationReader
 {
-    /// <summary>
-    /// A ConfigurationReader implementation that call the ConfigurationSectionHandler on a 
-    /// supplied XML string.
-    /// </summary>
-    /// <author>Mark Pollack</author>
-    [ExcludeFromCodeCoverage]
-    internal sealed class StandaloneConfigurationReader : IConfigurationReader
+    public StandaloneConfigurationReader() { }
+    public StandaloneConfigurationReader(string xmlString) => XmlString = xmlString;
+
+    public string XmlString { get; }
+
+    public object GetSection(string sectionName)
     {
-        public StandaloneConfigurationReader() { }
-        public StandaloneConfigurationReader(string xmlString) => XmlString = xmlString;
+        var handler = new ConfigurationSectionHandler();
+        return handler.Create(null, BuildConfigurationSection(XmlString));
+    }
 
-        public string XmlString { get; }
-
-        public object GetSection(string sectionName)
-        {
-            var handler = new ConfigurationSectionHandler();
-            return handler.Create(null, BuildConfigurationSection(XmlString));
-        }
-
-        private static XmlNode BuildConfigurationSection(string xml)
-        {
-            var doc = new ConfigXmlDocument();
-            doc.LoadXml(xml);
-            return doc.DocumentElement;
-        }
+    private static XmlNode BuildConfigurationSection(string xml)
+    {
+        var doc = new ConfigXmlDocument();
+        doc.LoadXml(xml);
+        return doc.DocumentElement;
     }
 }

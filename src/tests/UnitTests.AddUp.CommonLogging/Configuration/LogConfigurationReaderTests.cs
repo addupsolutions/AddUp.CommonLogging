@@ -21,122 +21,122 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
-namespace AddUp.CommonLogging.Configuration
+namespace AddUp.CommonLogging.Configuration;
+
+[TestFixture, ExcludeFromCodeCoverage]
+public class LogConfigurationReaderTests
 {
-    [TestFixture, ExcludeFromCodeCoverage]
-    public class LogConfigurationReaderTests
+    private sealed class FakeFactoryAdapter : ILoggerFactoryAdapter
     {
-        private sealed class FakeFactoryAdapter : ILoggerFactoryAdapter
-        {
-            public ILog GetLogger(Type type) => throw new NotImplementedException();
-            public ILog GetLogger(string key) => throw new NotImplementedException();
-        }
+        public ILog GetLogger(Type type) => throw new NotImplementedException();
+        public ILog GetLogger(string key) => throw new NotImplementedException();
+    }
 
-        [Test]
-        public void Constructor_NullConfiguration_ThrowsArgumentNull()
-        {
-            var ex = Assert.Throws<ArgumentNullException>(() => new LogConfigurationReader(null));
-            Assert.AreEqual("logConfiguration", ex.ParamName);
-        }
+    [Test]
+    public void Constructor_NullConfiguration_ThrowsArgumentNull()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => new LogConfigurationReader(null));
+        ClassicAssert.AreEqual("logConfiguration", ex.ParamName);
+    }
 
-        [Test]
-        public void GetSection_NullFactoryAdapter_ThrowsConfigurationException()
-        {
-            var config = new LogConfiguration();
-            var reader = new LogConfigurationReader(config);
-            _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
-        }
+    [Test]
+    public void GetSection_NullFactoryAdapter_ThrowsConfigurationException()
+    {
+        var config = new LogConfiguration();
+        var reader = new LogConfigurationReader(config);
+        _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
+    }
 
-        [Test]
-        public void GetSection_NullFactoryAdapterType_ThrowsConfigurationException()
+    [Test]
+    public void GetSection_NullFactoryAdapterType_ThrowsConfigurationException()
+    {
+        var config = new LogConfiguration
         {
-            var config = new LogConfiguration
+            FactoryAdapter = new FactoryAdapterConfiguration()
+        };
+
+        var reader = new LogConfigurationReader(config);
+        _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
+    }
+
+    [Test]
+    public void GetSection_EmptyFactoryAdapterType_ThrowsConfigurationException()
+    {
+        var config = new LogConfiguration
+        {
+            FactoryAdapter = new FactoryAdapterConfiguration { Type = "" }
+        };
+
+        var reader = new LogConfigurationReader(config);
+        _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
+    }
+
+    [Test]
+    public void GetSection_BadFactoryAdapterType_ThrowsConfigurationException()
+    {
+        var config = new LogConfiguration
+        {
+            FactoryAdapter = new FactoryAdapterConfiguration { Type = "SomeType, SomeAssembly" }
+        };
+
+        var reader = new LogConfigurationReader(config);
+        _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
+    }
+
+    [Test]
+    public void GetSection_GoodFactoryAdapterType_ReturnsLogSettingWithType()
+    {
+        var config = new LogConfiguration
+        {
+            FactoryAdapter = new FactoryAdapterConfiguration
             {
-                FactoryAdapter = new FactoryAdapterConfiguration()
-            };
+                Type = typeof(FakeFactoryAdapter).AssemblyQualifiedName
+            }
+        };
 
-            var reader = new LogConfigurationReader(config);
-            _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
-        }
+        var reader = new LogConfigurationReader(config);
+        var result = reader.GetSection(null) as LogSetting;
 
-        [Test]
-        public void GetSection_EmptyFactoryAdapterType_ThrowsConfigurationException()
+        ClassicAssert.NotNull(result);
+        ClassicAssert.AreEqual(typeof(FakeFactoryAdapter), result.FactoryAdapterType);
+    }
+
+    [Test]
+    public void GetSection_NoArguments_ReturnsLogSettingWithNullArguments()
+    {
+        var config = new LogConfiguration
         {
-            var config = new LogConfiguration
+            FactoryAdapter = new FactoryAdapterConfiguration
             {
-                FactoryAdapter = new FactoryAdapterConfiguration { Type = "" }
-            };
+                Type = typeof(FakeFactoryAdapter).AssemblyQualifiedName
+            }
+        };
 
-            var reader = new LogConfigurationReader(config);
-            _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
-        }
+        var reader = new LogConfigurationReader(config);
+        var result = reader.GetSection(null) as LogSetting;
 
-        [Test]
-        public void GetSection_BadFactoryAdapterType_ThrowsConfigurationException()
+        ClassicAssert.NotNull(result);
+        ClassicAssert.IsNull(result.Properties);
+    }
+
+    [Test]
+    public void GetSection_HasArguments_ReturnsLogSettingWithArguments()
+    {
+        var config = new LogConfiguration
         {
-            var config = new LogConfiguration
+            FactoryAdapter = new FactoryAdapterConfiguration
             {
-                FactoryAdapter = new FactoryAdapterConfiguration { Type = "SomeType, SomeAssembly" }
-            };
+                Type = typeof(FakeFactoryAdapter).AssemblyQualifiedName,
+                Arguments = new NameValueCollection { ["arg1"] = "value1" }
+            }
+        };
 
-            var reader = new LogConfigurationReader(config);
-            _ = Assert.Throws<ConfigurationException>(() => reader.GetSection(null));
-        }
+        var reader = new LogConfigurationReader(config);
+        var result = reader.GetSection(null) as LogSetting;
 
-        [Test]
-        public void GetSection_GoodFactoryAdapterType_ReturnsLogSettingWithType()
-        {
-            var config = new LogConfiguration
-            {
-                FactoryAdapter = new FactoryAdapterConfiguration
-                {
-                    Type = typeof(FakeFactoryAdapter).AssemblyQualifiedName
-                }
-            };
-
-            var reader = new LogConfigurationReader(config);
-            var result = reader.GetSection(null) as LogSetting;
-
-            Assert.NotNull(result);
-            Assert.AreEqual(typeof(FakeFactoryAdapter), result.FactoryAdapterType);
-        }
-
-        [Test]
-        public void GetSection_NoArguments_ReturnsLogSettingWithNullArguments()
-        {
-            var config = new LogConfiguration
-            {
-                FactoryAdapter = new FactoryAdapterConfiguration
-                {
-                    Type = typeof(FakeFactoryAdapter).AssemblyQualifiedName
-                }
-            };
-
-            var reader = new LogConfigurationReader(config);
-            var result = reader.GetSection(null) as LogSetting;
-
-            Assert.NotNull(result);
-            Assert.IsNull(result.Properties);
-        }
-
-        [Test]
-        public void GetSection_HasArguments_ReturnsLogSettingWithArguments()
-        {
-            var config = new LogConfiguration
-            {
-                FactoryAdapter = new FactoryAdapterConfiguration
-                {
-                    Type = typeof(FakeFactoryAdapter).AssemblyQualifiedName,
-                    Arguments = new NameValueCollection { ["arg1"] = "value1" }
-                }
-            };
-
-            var reader = new LogConfigurationReader(config);
-            var result = reader.GetSection(null) as LogSetting;
-
-            Assert.NotNull(result);
-            Assert.AreEqual("value1", result.Properties["arg1"]);
-        }
+        ClassicAssert.NotNull(result);
+        ClassicAssert.AreEqual("value1", result.Properties["arg1"]);
     }
 }
