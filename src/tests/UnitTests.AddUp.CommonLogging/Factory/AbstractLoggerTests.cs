@@ -101,6 +101,7 @@ public class AbstractLoggerTests
     /// Ensures, that all interface methods delegate to Write() with correct level + arguments
     /// and that arguments are still not evaluated up to this point (e.g. calling ToString())
     /// </summary>
+    [SuppressMessage("Minor Code Smell", "S3878:Arrays should not be created for params parameters", Justification = "False positive, this is an array considered as one parameter")]
     private static void LogsMessage(string levelName)
     {
         var log = new TestLogger();
@@ -119,22 +120,22 @@ public class AbstractLoggerTests
         ClassicAssert.AreEqual("messageObject1", log.LastMessage);
         ClassicAssert.AreEqual(ex, log.LastException);
 
-        Invoke(log, logMethods[2], "format2 {0}", "arg2");
+        Invoke(log, logMethods[2], "format2 {0}", new object[] { "arg2" });
         ClassicAssert.AreEqual(logLevel, log.LastLogLevel);
         ClassicAssert.AreEqual("format2 arg2", log.LastMessage);
         ClassicAssert.AreEqual(null, log.LastException);
 
-        Invoke(log, logMethods[3], "format3 {0}", ex, "arg3");
+        Invoke(log, logMethods[3], "format3 {0}", ex, new object[] { "arg3" });
         ClassicAssert.AreEqual(logLevel, log.LastLogLevel);
         ClassicAssert.AreEqual("format3 arg3", log.LastMessage);
         ClassicAssert.AreEqual(ex, log.LastException);
 
-        Invoke(log, logMethods[4], CultureInfo.CreateSpecificCulture("de-de"), "format4 {0}", 4.1);
+        Invoke(log, logMethods[4], CultureInfo.CreateSpecificCulture("de-de"), "format4 {0}", new object[] { 4.1 });
         ClassicAssert.AreEqual(logLevel, log.LastLogLevel);
         ClassicAssert.AreEqual("format4 4,1", log.LastMessage);
         ClassicAssert.AreEqual(null, log.LastException);
 
-        Invoke(log, logMethods[5], CultureInfo.CreateSpecificCulture("de-de"), "format5 {0}", ex, 5.1);
+        Invoke(log, logMethods[5], CultureInfo.CreateSpecificCulture("de-de"), "format5 {0}", ex, new object[] { 5.1 });
         ClassicAssert.AreEqual(logLevel, log.LastLogLevel);
         ClassicAssert.AreEqual("format5 5,1", log.LastMessage);
         ClassicAssert.AreEqual(ex, log.LastException);
@@ -149,7 +150,7 @@ public class AbstractLoggerTests
         ClassicAssert.AreEqual("message7", log.LastMessage);
         ClassicAssert.AreEqual(ex, log.LastException);
 
-        Invoke(log, logMethods[8], CultureInfo.CreateSpecificCulture("de-de"), TestFormatMessageCallback.MessageCallback("format8 {0}", 8.1));
+        Invoke(log, logMethods[8], CultureInfo.CreateSpecificCulture("de-de"), TestFormatMessageCallback.MessageCallback("format8 {0}", new object[] { 8.1 }));
         ClassicAssert.AreEqual(logLevel, log.LastLogLevel);
         ClassicAssert.AreEqual("format8 8,1", log.LastMessage);
         ClassicAssert.AreEqual(null, log.LastException);
@@ -164,6 +165,7 @@ public class AbstractLoggerTests
     /// Ensures, that all interface methods delegate to Write() with correct level + arguments
     /// and that arguments are still not evaluated up to this point (e.g. calling ToString())
     /// </summary>
+    [SuppressMessage("Minor Code Smell", "S3878:Arrays should not be created for params parameters", Justification = "False positive, this is an array considered as one parameter")]
     private static void WriteIsCalledWithCorrectLogLevel(string levelName)
     {
         var mocks = new MockRepository();
@@ -205,10 +207,10 @@ public class AbstractLoggerTests
 
         Invoke(log, logMethods[0], messageObject);
         Invoke(log, logMethods[1], messageObject, ex);
-        Invoke(log, logMethods[2], "format", formatArg);
-        Invoke(log, logMethods[3], "format", ex, formatArg);
-        Invoke(log, logMethods[4], CultureInfo.InvariantCulture, "format", formatArg);
-        Invoke(log, logMethods[5], CultureInfo.InvariantCulture, "format", ex, formatArg);
+        Invoke(log, logMethods[2], "format", new object[] { formatArg });
+        Invoke(log, logMethods[3], "format", ex, new object[] { formatArg });
+        Invoke(log, logMethods[4], CultureInfo.InvariantCulture, "format", new object[] { formatArg });
+        Invoke(log, logMethods[5], CultureInfo.InvariantCulture, "format", ex, new object[] { formatArg });
         Invoke(log, logMethods[6], failCallback);
         Invoke(log, logMethods[7], failCallback, ex);
         Invoke(log, logMethods[8], CultureInfo.InvariantCulture, failCallback);
@@ -222,6 +224,7 @@ public class AbstractLoggerTests
     /// a) <c>AbstractLogger.Write</c> is not called if that loglevel is disabled
     /// b) No argument is evaluated (e.g. calling ToString()) if that loglevel is disabled
     /// </summary>
+    [SuppressMessage("Minor Code Smell", "S3878:Arrays should not be created for params parameters", Justification = "False positive, this is an array considered as one parameter")]
     private static void WriteAndEvaluateOnlyWhenLevelEnabled(string levelName)
     {
         var mocks = new MockRepository();
@@ -241,16 +244,16 @@ public class AbstractLoggerTests
             Invoke(log, logMethods[1], messageObject, ex);
             _ = LastCall.CallOriginalMethod(OriginalCallOptions.CreateExpectation);
             _ = Expect.Call(IsLevelEnabled(log, levelName)).Return(false);
-            Invoke(log, logMethods[2], "format", formatArg);
+            Invoke(log, logMethods[2], "format", new object[] { formatArg });
             _ = LastCall.CallOriginalMethod(OriginalCallOptions.CreateExpectation);
             _ = Expect.Call(IsLevelEnabled(log, levelName)).Return(false);
-            Invoke(log, logMethods[3], "format", ex, formatArg);
+            Invoke(log, logMethods[3], "format", ex, new object[] { formatArg });
             _ = LastCall.CallOriginalMethod(OriginalCallOptions.CreateExpectation);
             _ = Expect.Call(IsLevelEnabled(log, levelName)).Return(false);
-            Invoke(log, logMethods[4], CultureInfo.InvariantCulture, "format", formatArg);
+            Invoke(log, logMethods[4], CultureInfo.InvariantCulture, "format", new object[] { formatArg });
             _ = LastCall.CallOriginalMethod(OriginalCallOptions.CreateExpectation);
             _ = Expect.Call(IsLevelEnabled(log, levelName)).Return(false);
-            Invoke(log, logMethods[5], CultureInfo.InvariantCulture, "format", ex, formatArg);
+            Invoke(log, logMethods[5], CultureInfo.InvariantCulture, "format", ex, new object[] { formatArg });
             _ = LastCall.CallOriginalMethod(OriginalCallOptions.CreateExpectation);
             _ = Expect.Call(IsLevelEnabled(log, levelName)).Return(false);
             Invoke(log, logMethods[6], failCallback);
@@ -271,10 +274,10 @@ public class AbstractLoggerTests
 
         Invoke(log, logMethods[0], messageObject);
         Invoke(log, logMethods[1], messageObject, ex);
-        Invoke(log, logMethods[2], "format", formatArg);
-        Invoke(log, logMethods[3], "format", ex, formatArg);
-        Invoke(log, logMethods[4], CultureInfo.InvariantCulture, "format", formatArg);
-        Invoke(log, logMethods[5], CultureInfo.InvariantCulture, "format", ex, formatArg);
+        Invoke(log, logMethods[2], "format", new object[] { formatArg });
+        Invoke(log, logMethods[3], "format", ex, new object[] { formatArg });
+        Invoke(log, logMethods[4], CultureInfo.InvariantCulture, "format", new object[] { formatArg });
+        Invoke(log, logMethods[5], CultureInfo.InvariantCulture, "format", ex, new object[] { formatArg });
         Invoke(log, logMethods[6], failCallback);
         Invoke(log, logMethods[7], failCallback, ex);
         Invoke(log, logMethods[8], CultureInfo.InvariantCulture, failCallback);
