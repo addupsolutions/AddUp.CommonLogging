@@ -30,10 +30,9 @@ namespace AddUp.CommonLogging.Simple
 {
     internal static class ExceptionFormatter
     {
-        // constants
         private const string unavailable = "<unavailable>";
-        private const string STANDARD_DELIMETER = "================================================================================\r\n";
-        private const string INNERMOST_DELIMETER = "=======================================================(inner most exception)===\r\n";
+        private static readonly string STANDARD_DELIMETER = "================================================================================" + Environment.NewLine;
+        private static readonly string INNERMOST_DELIMETER = "=======================================================(inner most exception)===" + Environment.NewLine;
 
         internal static string Format(Exception exception) => Format(exception, CultureInfo.InvariantCulture);
         internal static string Format(Exception exception, IFormatProvider formatProvider)
@@ -79,7 +78,7 @@ namespace AddUp.CommonLogging.Simple
         //
         private static void OutputHeader(IFormatProvider formatProvider, StringBuilder builder, Exception exception, int exceptionIndex) => builder
             .Append(exceptionIndex == 1 ? INNERMOST_DELIMETER : STANDARD_DELIMETER)
-            .AppendFormat(formatProvider, " ({0}) {1}\r\n", exceptionIndex, exception.GetType().FullName)
+            .AppendFormat(formatProvider, " ({0}) {1}" + Environment.NewLine, exceptionIndex, exception.GetType().FullName)
             .Append(STANDARD_DELIMETER);
 
         private static void OutputDetails(IFormatProvider formatProvider, StringBuilder builder, Exception exception)
@@ -98,13 +97,13 @@ namespace AddUp.CommonLogging.Simple
             SafeGetSourceAndHelplink(exception, out var source, out var helplink);
 
             _ = builder.AppendFormat(formatProvider,
-                "Method        :  {0}\r\n" +
-                "Type          :  {1}\r\n" +
-                "Assembly      :  {2}\r\n" +
-                "Assembly Path :  {3}\r\n" +
-                "Source        :  {4}\r\n" +
-                "Thread        :  {5} '{6}'\r\n" +
-                "Helplink      :  {7}\r\n",
+                "Method        :  {0}" + Environment.NewLine +
+                "Type          :  {1}" + Environment.NewLine +
+                "Assembly      :  {2}" + Environment.NewLine +
+                "Assembly Path :  {3}" + Environment.NewLine +
+                "Source        :  {4}" + Environment.NewLine +
+                "Thread        :  {5} '{6}'" + Environment.NewLine +
+                "Helplink      :  {7}" + Environment.NewLine,
                 methodName, typeName, assemblyName, assemblyModuleName,
                 source,
                 Environment.CurrentManagedThreadId, Thread.CurrentThread.Name,
@@ -112,7 +111,10 @@ namespace AddUp.CommonLogging.Simple
         }
 
         private static void OutputMessage(IFormatProvider formatProvider, StringBuilder builder, Exception exception) =>
-            builder.AppendFormat(formatProvider, "\r\nMessage:\r\n\"{0}\"\r\n", exception.Message);
+            builder.AppendFormat(formatProvider,
+                Environment.NewLine +
+                "Message:" + Environment.NewLine +
+                "\"{0}\"" + Environment.NewLine, exception.Message);
 
         private static void OutputProperties(IFormatProvider formatProvider, StringBuilder builder, Exception exception)
         {
@@ -127,7 +129,7 @@ namespace AddUp.CommonLogging.Simple
                 if (first)
                 {
                     first = false;
-                    _ = builder.Append("\r\nProperties:\r\n");
+                    _ = builder.Append(Environment.NewLine + "Properties:" + Environment.NewLine);
                 }
 
                 OutputProperty(property, formatProvider, builder, exception);
@@ -144,23 +146,23 @@ namespace AddUp.CommonLogging.Simple
             var propertyTypeName = property.ReflectedType.Name;
             if (propertyValue is IEnumerable enumerableValue && !(propertyValue is string))
             {
-                _ = builder.AppendFormat(formatProvider, "  {0}.{1} = {{\r\n", propertyTypeName, property.Name);
+                _ = builder.AppendFormat(formatProvider, "  {0}.{1} = {{" + Environment.NewLine, propertyTypeName, property.Name);
 
                 foreach (var item in enumerableValue)
-                    _ = builder.AppendFormat("    \"{0}\",\r\n", item != null ? item.ToString() : "<null>");
+                    _ = builder.AppendFormat("    \"{0}\"," + Environment.NewLine, item != null ? item.ToString() : "<null>");
 
-                _ = builder.Append("  }\r\n");
+                _ = builder.AppendLine("  }");
             }
-            else _ = builder.AppendFormat(formatProvider, "  {0}.{1} = \"{2}\"\r\n", propertyTypeName, property.Name, propertyValue);
+            else _ = builder.AppendFormat(formatProvider, "  {0}.{1} = \"{2}\"" + Environment.NewLine, propertyTypeName, property.Name, propertyValue);
         }
 
         private static void OutputData(IFormatProvider formatProvider, StringBuilder builder, Exception exception)
         {
             if (exception.Data.Count == 0) return;
 
-            _ = builder.Append("\r\nData:\r\n");
+            _ = builder.Append(Environment.NewLine + "Data:" + Environment.NewLine);
             foreach (DictionaryEntry entry in exception.Data)
-                _ = builder.AppendFormat(formatProvider, "{0} = \"{1}\"\r\n", entry.Key, entry.Value);
+                _ = builder.AppendFormat(formatProvider, "{0} = \"{1}\"" + Environment.NewLine, entry.Key, entry.Value);
         }
 
         // output stack trace:
@@ -170,7 +172,9 @@ namespace AddUp.CommonLogging.Simple
         //    at AddUp.CommonLogging.LogStoreWriter._SetupRootFolder() 
         //    at AddUp.CommonLogging.LogStoreWriter..ctor(String rootPath, Int32 maxStoreSize, Int32 minBacklogs) 
         private static void OutputStackTrace(IFormatProvider formatProvider, StringBuilder builder, Exception exception) =>
-            builder.AppendFormat(formatProvider, "\r\nStack Trace:\r\n{0}\r\n", exception.StackTrace);
+            builder.AppendFormat(formatProvider, Environment.NewLine +
+                "Stack Trace:" + Environment.NewLine +
+                "{0}" + Environment.NewLine, exception.StackTrace);
 
         private static void SafeGetTargetSiteInfo(Exception exception, out string assemblyName, out string assemblyModulePath, out string typeName, out string methodName)
         {
