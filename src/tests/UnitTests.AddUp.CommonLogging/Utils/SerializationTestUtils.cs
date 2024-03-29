@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -6,6 +6,7 @@ namespace AddUp.CommonLogging.Utils;
 
 // BinayFormatter tests
 #pragma warning disable SYSLIB0011 // Type or member is obsolete
+#pragma warning disable SYSLIB0050 // Formatter-based serialization is obsolete
 
 [ExcludeFromCodeCoverage]
 internal static class SerializationTestUtils
@@ -33,4 +34,5 @@ internal static class SerializationTestUtils
     }
 }
 
-#pragma warning restore SYSLIB0011 // Type or member is obsolete
+#pragma warning restore SYSLIB0050
+#pragma warning restore SYSLIB0011

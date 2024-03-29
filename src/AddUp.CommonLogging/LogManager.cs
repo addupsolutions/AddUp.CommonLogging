@@ -1,7 +1,7 @@
 #region License
 
 /*
- * Copyright © 2002-2009 the original author or authors.
+ * Copyright Â© 2002-2009 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -134,13 +134,13 @@ namespace AddUp.CommonLogging
         {
             lock (loadLock)
             {
-                ConfigurationReader = reader ?? throw new ArgumentNullException("reader");
+                ConfigurationReader = reader ?? throw new ArgumentNullException(nameof(reader));
                 adapter = null;
             }
         }
 
         void ILogManager.Reset() => Reset();
-        void ILogManager.Reset(IConfigurationReader reader) { Reset(reader); }
+        void ILogManager.Reset(IConfigurationReader reader) => Reset(reader);
 
         /// <summary>
         /// Reset the <see cref="AddUp.CommonLogging" /> infrastructure to the provided configuration.
@@ -155,8 +155,7 @@ namespace AddUp.CommonLogging
         /// </param>
         public static void Configure(LogConfiguration configuration)
         {
-            if (configuration == null)
-                throw new ArgumentNullException("configuration");
+            if (configuration == null) throw new ArgumentNullException(nameof(configuration));
             Reset(new LogConfigurationReader(configuration));
         }
 
@@ -180,7 +179,7 @@ namespace AddUp.CommonLogging
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("Adapter");
+                    throw new ArgumentNullException(nameof(Adapter));
 
                 lock (loadLock)
                     adapter = value;

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 
 /*
  * Copyright © 2002-2009 the original author or authors.
@@ -77,7 +77,7 @@ namespace AddUp.CommonLogging.Configuration
         {
             if (values == null) return defaultValue;
 
-            foreach (string valueKey in values.Keys)
+            foreach (var valueKey in values.Keys)
             {
                 if (string.Compare(key, valueKey, StringComparison.OrdinalIgnoreCase) == 0)
                     return values[key];
@@ -105,7 +105,7 @@ namespace AddUp.CommonLogging.Configuration
 
             for (var i = 0; i < values.Length; i++)
             {
-                T val = values[i];
+                var val = values[i];
                 if (predicate(val))
                     return val;
             }
@@ -146,7 +146,7 @@ namespace AddUp.CommonLogging.Configuration
         /// <returns>the successfully parsed value, <paramref key="defaultValue"/> otherwise.</returns>
         public static T TryParse<T>(T defaultValue, string stringValue)
         {
-            T result = defaultValue;
+            var result = defaultValue;
             if (string.IsNullOrEmpty(stringValue)) return defaultValue;
 
             if (!parsers.TryGetValue(typeof(T), out var untypedParser) || !(untypedParser is ParseHandler<T>))
@@ -168,22 +168,14 @@ namespace AddUp.CommonLogging.Configuration
         /// <summary>
         /// Throws an <see cref="ArgumentNullException"/> if <paramref key="val"/> is <c>null</c>.
         /// </summary>
-        public static T AssertNotNull<T>(string paramName, T val) where T : class
-        {
-            if (val is null)
-                throw new ArgumentNullException(paramName);
-            return val;
-        }
+        public static T AssertNotNull<T>(string paramName, T value) where T : class =>
+            value is null ? throw new ArgumentNullException(paramName) : value;
 
         /// <summary>
         /// Throws a <see cref="ArgumentNullException"/> if <paramref key="value"/> is <c>null</c>.
         /// </summary>
-        public static T AssertNotNull<T>(string paramName, T value, string messageFormat, params object[] args) where T : class
-        {
-            if (value is null)
-                throw new ArgumentNullException(paramName, string.Format(messageFormat, args));
-            return value;
-        }
+        public static T AssertNotNull<T>(string paramName, T value, string messageFormat, params object[] args) where T : class => 
+            value is null ? throw new ArgumentNullException(paramName, string.Format(messageFormat, args)) : value;
 
         /// <summary>
         /// Throws a <see cref="ArgumentOutOfRangeException"/> if an object of type <paramref key="valueType"/> is not
@@ -201,9 +193,9 @@ namespace AddUp.CommonLogging.Configuration
         public static Type AssertIsAssignable<T>(string paramName, Type valueType, string messageFormat, params object[] args)
         {
             if (valueType == null) throw new ArgumentNullException(nameof(valueType));
-            if (!typeof(T).IsAssignableFrom(valueType)) throw new ArgumentOutOfRangeException(paramName, valueType, string.Format(messageFormat, args));
-
-            return valueType;
+            return typeof(T).IsAssignableFrom(valueType)
+                ? valueType
+                : throw new ArgumentOutOfRangeException(paramName, valueType, string.Format(messageFormat, args));
         }
 
         /// <summary>

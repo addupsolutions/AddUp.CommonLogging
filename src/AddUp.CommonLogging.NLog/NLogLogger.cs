@@ -70,7 +70,7 @@ namespace AddUp.CommonLogging.NLog
                 case LogLevel.Fatal: return LogLevelNLog.Fatal;
                 case LogLevel.Off: return LogLevelNLog.Off;
                 default:
-                    throw new ArgumentOutOfRangeException("logLevel", logLevel, "unknown log level");
+                    throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, "unknown log level");
             }
         }
     }

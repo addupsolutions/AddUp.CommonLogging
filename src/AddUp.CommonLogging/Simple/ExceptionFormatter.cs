@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 
 /*
  * Copyright © 2002-2013 the original author or authors.
@@ -31,6 +31,7 @@ namespace AddUp.CommonLogging.Simple
     internal static class ExceptionFormatter
     {
         // constants
+        private const string unavailable = "<unavailable>";
         private const string STANDARD_DELIMETER = "================================================================================\r\n";
         private const string INNERMOST_DELIMETER = "=======================================================(inner most exception)===\r\n";
 
@@ -70,19 +71,16 @@ namespace AddUp.CommonLogging.Simple
             _ = builder.Append(STANDARD_DELIMETER);
         }
 
-        private static void OutputHeader(IFormatProvider formatProvider, StringBuilder builder, Exception exception, int exceptionIndex)
-        {
-            // output header:
-            //
-            //	=======================================================(inner most exception)===
-            //	 (index) exception-type-name
-            //  ================================================================================
-            //
-            _ = builder
-                .Append(exceptionIndex == 1 ? INNERMOST_DELIMETER : STANDARD_DELIMETER)
-                .AppendFormat(formatProvider, " ({0}) {1}\r\n", exceptionIndex, exception.GetType().FullName)
-                .Append(STANDARD_DELIMETER);
-        }
+        // output header:
+        //
+        //	=======================================================(inner most exception)===
+        //	 (index) exception-type-name
+        //  ================================================================================
+        //
+        private static void OutputHeader(IFormatProvider formatProvider, StringBuilder builder, Exception exception, int exceptionIndex) => builder
+            .Append(exceptionIndex == 1 ? INNERMOST_DELIMETER : STANDARD_DELIMETER)
+            .AppendFormat(formatProvider, " ({0}) {1}\r\n", exceptionIndex, exception.GetType().FullName)
+            .Append(STANDARD_DELIMETER);
 
         private static void OutputDetails(IFormatProvider formatProvider, StringBuilder builder, Exception exception)
         {
@@ -109,7 +107,7 @@ namespace AddUp.CommonLogging.Simple
                 "Helplink      :  {7}\r\n",
                 methodName, typeName, assemblyName, assemblyModuleName,
                 source,
-                Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.Name,
+                Environment.CurrentManagedThreadId, Thread.CurrentThread.Name,
                 helplink);
         }
 
@@ -121,7 +119,7 @@ namespace AddUp.CommonLogging.Simple
             var properties = exception.GetType().GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public);
             var first = true;
 
-            foreach (PropertyInfo property in properties)
+            foreach (var property in properties)
             {
                 if (property.DeclaringType == typeof(Exception)) continue;
                 if (property.Name == "Message") continue;
@@ -138,7 +136,7 @@ namespace AddUp.CommonLogging.Simple
 
         private static void OutputProperty(PropertyInfo property, IFormatProvider formatProvider, StringBuilder builder, Exception exception)
         {
-            object propertyValue = "<unavailable>";
+            object propertyValue = unavailable;
 
             if (property.CanRead && property.GetIndexParameters().Length <= 0)
                 propertyValue = property.GetValue(exception, null);
@@ -176,10 +174,10 @@ namespace AddUp.CommonLogging.Simple
 
         private static void SafeGetTargetSiteInfo(Exception exception, out string assemblyName, out string assemblyModulePath, out string typeName, out string methodName)
         {
-            assemblyName = "<unavailable>";
-            assemblyModulePath = "<unavailable>";
-            typeName = "<unavailable>";
-            methodName = "<unavailable>";
+            assemblyName = unavailable;
+            assemblyModulePath = unavailable;
+            typeName = unavailable;
+            methodName = unavailable;
 
             var targetSite = exception.TargetSite;
             if (targetSite != null)
@@ -197,7 +195,7 @@ namespace AddUp.CommonLogging.Simple
             }
         }
 
-        private static void SafeGetSourceAndHelplink(Exception exception, out String source, out String helplink)
+        private static void SafeGetSourceAndHelplink(Exception exception, out string source, out string helplink)
         {
             source = exception.Source;
             helplink = exception.HelpLink;

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 
 /*
  * Copyright © 2002-2009 the original author or authors.
@@ -111,12 +111,11 @@ namespace AddUp.CommonLogging.Simple
                     ? stringBuilder.Append(DateTime.Now.ToString(DateTimeFormat, CultureInfo.InvariantCulture))
                     : stringBuilder.Append(DateTime.Now);
 
-                _ = stringBuilder.Append(" ");
+                _ = stringBuilder.Append(' ');
             }
 
             if (ShowLevel) // Append a readable representation of the log level
                 _ = stringBuilder.Append(("[" + level.ToString().ToUpper() + "]").PadRight(8));
-
 
             if (ShowLogName) // Append the key of the log instance if so configured
                 _ = stringBuilder.Append(Name).Append(" - ");

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 
 /*
  * Copyright © 2002-2009 the original author or authors.
@@ -83,9 +83,7 @@ namespace AddUp.CommonLogging.Simple
         /// <param name="properties">name/value configuration properties.</param>
         public CommonLoggingTraceListener(NameValueCollection properties) : base()
         {
-            if (properties == null)
-                properties = new NameValueCollection();
-
+            if (properties == null) properties = new NameValueCollection();
             ApplyProperties(properties);
         }
 
@@ -263,7 +261,7 @@ namespace AddUp.CommonLogging.Simple
             var log = LogManager.GetLogger(source);
 
             callDepth--;
-            LogLevel logLevel = MapLogLevel(eventType);
+            var logLevel = MapLogLevel(eventType);
 
             switch (logLevel)
             {
@@ -288,7 +286,7 @@ namespace AddUp.CommonLogging.Simple
                 case LogLevel.Off:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("eventType", eventType, "invalid TraceEventType value");
+                    throw new ArgumentOutOfRangeException(nameof(eventType), eventType, "invalid TraceEventType value");
             }
         }
 
@@ -318,7 +316,7 @@ namespace AddUp.CommonLogging.Simple
             return props;
         }
 
-        private string GetFormat(params object[] data)
+        private static string GetFormat(params object[] data)
         {
             if (data == null || data.Length == 0)
                 return null;
@@ -334,7 +332,7 @@ namespace AddUp.CommonLogging.Simple
             return format.ToString();
         }
 
-        private LogLevel MapLogLevel(TraceEventType eventType)
+        private static LogLevel MapLogLevel(TraceEventType eventType)
         {
             switch (eventType)
             {

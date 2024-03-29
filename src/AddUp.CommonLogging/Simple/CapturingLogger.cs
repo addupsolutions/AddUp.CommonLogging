@@ -15,7 +15,7 @@ namespace AddUp.CommonLogging.Simple
 
         public CapturingLogger(CapturingLoggerFactoryAdapter owner, string logName) : base(logName, LogLevel.All, true, true, true, null)
         {
-            _ = ArgUtils.AssertNotNull("owner", owner);
+            _ = ArgUtils.AssertNotNull(nameof(owner), owner);
             Owner = owner;
         }
 
@@ -74,7 +74,7 @@ namespace AddUp.CommonLogging.Simple
         /// <param name="exception"></param>
         protected override void WriteInternal(LogLevel level, object message, Exception exception)
         {
-            CapturingLoggerEvent ev = new CapturingLoggerEvent(this, level, message, exception);
+            var ev = new CapturingLoggerEvent(this, level, message, exception);
             AddEvent(ev);
         }
     }

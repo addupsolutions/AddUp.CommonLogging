@@ -1,7 +1,7 @@
 #region License
 
 /*
- * Copyright © 2002-2009 the original author or authors.
+ * Copyright Â© 2002-2009 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,7 +96,7 @@ namespace AddUp.CommonLogging.Simple
         public virtual void OnDeserialization(object sender)
         {
             if (UseTraceSource)
-                traceSource = new TraceSource(this.Name, Map2SourceLevel(this.CurrentLogLevel));
+                traceSource = new TraceSource(Name, Map2SourceLevel(CurrentLogLevel));
         }
 
         protected override bool IsLevelEnabled(LogLevel level) => UseTraceSource
@@ -129,7 +129,7 @@ namespace AddUp.CommonLogging.Simple
             }
         }
 
-        private TraceEventType Map2TraceEventType(LogLevel logLevel)
+        private static TraceEventType Map2TraceEventType(LogLevel logLevel)
         {
             switch (logLevel)
             {
@@ -150,7 +150,7 @@ namespace AddUp.CommonLogging.Simple
             }
         }
 
-        private SourceLevels Map2SourceLevel(LogLevel logLevel)
+        private static SourceLevels Map2SourceLevel(LogLevel logLevel)
         {
             switch (logLevel)
             {

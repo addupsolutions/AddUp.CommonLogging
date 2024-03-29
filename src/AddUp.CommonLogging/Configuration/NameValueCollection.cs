@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace AddUp.CommonLogging.Configuration
@@ -15,12 +15,8 @@ namespace AddUp.CommonLogging.Configuration
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>an array with one value, or null if no value exist</returns>
-        public string[] GetValues(string key)
-        {
-            if (TryGetValue(key, out string value) && value != null)
-                return new[] { value };
-            return new string[0];
-        }
+        public string[] GetValues(string key) => 
+            TryGetValue(key, out var value) && value != null ? (new[] { value }) : Array.Empty<string>();
 
         /// <summary>
         /// Gets or sets the value with the specified key.
@@ -32,12 +28,7 @@ namespace AddUp.CommonLogging.Configuration
         /// <returns>value store for the key</returns>
         public new string this[string key]
         {
-            get
-            {
-                if (TryGetValue(key, out string value))
-                    return value;
-                return null;
-            }
+            get => TryGetValue(key, out var value) ? value : null;
             set => base[key] = value;
         }
     }

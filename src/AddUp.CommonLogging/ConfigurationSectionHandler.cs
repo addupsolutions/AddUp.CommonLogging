@@ -1,7 +1,7 @@
 #region License
 
 /*
- * Copyright © 2002-2009 the original author or authors.
+ * Copyright Â© 2002-2009 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,10 +93,10 @@ namespace AddUp.CommonLogging
             if (logFactoryElementsCount > 1)
                 throw new ConfigurationException("Only one <factoryAdapter> element allowed");
 
-            return logFactoryElementsCount == 1 ? ReadConfiguration(section) : null;
+            return logFactoryElementsCount == 1 ? ConfigurationSectionHandler.ReadConfiguration(section) : null;
         }
 
-        private LogSetting ReadConfiguration(XmlNode section)
+        private static LogSetting ReadConfiguration(XmlNode section)
         {
             var logFactoryElement = section.SelectSingleNode(LOGFACTORYADAPTER_ELEMENT);
             var factoryTypeString = string.Empty;
