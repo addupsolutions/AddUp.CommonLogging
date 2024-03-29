@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <RootNamespace>AddUp.CommonLogging</RootNamespace>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <SignAssembly>true</SignAssembly>
@@ -11,6 +11,8 @@
     <GenerateBindingRedirectsOutputType>True</GenerateBindingRedirectsOutputType>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <SonarQubeTestProject>true</SonarQubeTestProject>
+    <!-- Required when wanting to run .NET 6 unit tests on a .NET 8 only host -->
+    <RollForward>LatestMajor</RollForward>
   </PropertyGroup>
 
   <ItemGroup>
