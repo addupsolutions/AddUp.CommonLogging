@@ -232,7 +232,7 @@ namespace AddUp.CommonLogging
                 var message = (ConfigurationReader is DefaultConfigurationReader)
                     ? $"no configuration section <{ADDUP_COMMONLOGGING_SECTION}> found - suppressing logging output"
                     : $"Custom ConfigurationReader '{ConfigurationReader.GetType().FullName}' returned <null> - suppressing logging output";
-                Trace.WriteLine(message);
+                Trace.TraceInformation(message);
                 ILoggerFactoryAdapter defaultFactory = new NoOpLoggerFactoryAdapter();
                 return defaultFactory;
             }
@@ -240,7 +240,7 @@ namespace AddUp.CommonLogging
             // ready to use ILoggerFactoryAdapter?
             if (sectionResult is ILoggerFactoryAdapter factoryAdapter)
             {
-                Trace.WriteLine($"Using ILoggerFactoryAdapter returned from custom ConfigurationReader '{ConfigurationReader.GetType().FullName}'");
+                Trace.TraceInformation($"Using ILoggerFactoryAdapter returned from custom ConfigurationReader '{ConfigurationReader.GetType().FullName}'");
                 return factoryAdapter;
             }
 

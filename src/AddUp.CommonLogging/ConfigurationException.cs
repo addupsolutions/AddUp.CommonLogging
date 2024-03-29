@@ -1,7 +1,7 @@
 #region License
 
 /*
- * Copyright © 2002-2009 the original author or authors.
+ * Copyright Â© 2002-2009 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 namespace AddUp.CommonLogging
@@ -33,6 +34,13 @@ namespace AddUp.CommonLogging
         public ConfigurationException() { }
         public ConfigurationException(string message) : base(message) { }
         public ConfigurationException(string message, Exception rootCause) : base(message, rootCause) { }
+
+#if NET8_0_OR_GREATER
+        [Obsolete("See https://learn.microsoft.com/en-us/dotnet/fundamentals/syslib-diagnostics/syslib0051", DiagnosticId = "SYSLIB0051")]
+#else
+        [Obsolete("See https://learn.microsoft.com/en-us/dotnet/fundamentals/syslib-diagnostics/syslib0051")]
+#endif
+        [SuppressMessage("Info Code Smell", "S1133:Deprecated code should be removed", Justification = "See https://learn.microsoft.com/en-us/dotnet/fundamentals/syslib-diagnostics/syslib0051")]
         protected ConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

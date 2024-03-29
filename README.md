@@ -51,6 +51,12 @@ Also note that the section group should be `addup` and not `common` (so that it 
 
 ## History
 
+### [Version 1.0.3 - 2024/03/29](https://github.com/addupsolutions/AddUp.CommonLogging/releases/tag/v1.0.3)
+
+* Updated dependencies:
+  * `System.Configuration.ConfigurationManager`: v6.0.0 -> v8.0.0
+* Code Quality
+
 ### [Version 1.0.2 - 2022/09/13](https://github.com/addupsolutions/AddUp.CommonLogging/releases/tag/v1.0.2)
 
 * No change apart from the PDBs being included in the `nupkg` files

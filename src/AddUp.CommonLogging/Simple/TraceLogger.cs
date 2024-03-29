@@ -123,7 +123,7 @@ namespace AddUp.CommonLogging.Simple
                         System.Diagnostics.Trace.TraceError("{0}", msg);
                         break;
                     default:
-                        System.Diagnostics.Trace.WriteLine(msg);
+                        System.Diagnostics.Trace.TraceInformation("{0}", msg);
                         break;
                 }
             }

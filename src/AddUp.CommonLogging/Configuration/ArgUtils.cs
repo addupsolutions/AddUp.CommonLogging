@@ -132,7 +132,7 @@ namespace AddUp.CommonLogging.Configuration
             }
             catch (Exception ex)
             {
-                Trace.WriteLine($"WARN: failed to convert value '{stringValue}' to enum type '{defaultValue.GetType().FullName}' ({ex.Message})");
+                Trace.TraceWarning($"WARN: failed to convert value '{stringValue}' to enum type '{defaultValue.GetType().FullName}' ({ex.Message})");
             }
 
             return defaultValue;
@@ -159,7 +159,7 @@ namespace AddUp.CommonLogging.Configuration
             }
             catch (Exception ex)
             {
-                Trace.WriteLine($"WARN: failed to convert value '{stringValue}' to type '{typeof(T).FullName}' - returning default '{result}' ({ex.Message})");
+                Trace.TraceWarning($"WARN: failed to convert value '{stringValue}' to type '{typeof(T).FullName}' - returning default '{result}' ({ex.Message})");
             }
 
             return result;
